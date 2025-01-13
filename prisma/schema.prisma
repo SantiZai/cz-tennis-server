@@ -6,3 +6,38 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
+model users {
+  id         String   @id @default(uuid())
+  name       String
+  email      String   @unique
+  address    String?
+  created_at DateTime @default(now())
+  updated_at DateTime @default(now())
+  orders     orders[]
+}
+
+model products {
+  id          String   @id @default(uuid())
+  name        String
+  description String?
+  brand       String
+  image_url   String?
+  variants    String[]
+  categories  String[]
+  on_offer    Boolean  @default(false)
+  prices      Float[]
+  created_at  DateTime @default(now())
+  updated_at  DateTime @default(now())
+}
+
+model orders {
+  id               String   @id @default(uuid())
+  user_id          String
+  products         String[]
+  state            String   @default("pending")
+  total            Float
+  delivery_address String
+  created_at       DateTime @default(now())
+  user             users    @relation(fields: [user_id], references: [id], onDelete: Cascade)
+}
