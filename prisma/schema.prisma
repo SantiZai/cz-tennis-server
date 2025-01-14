@@ -7,17 +7,17 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model users {
+model User {
   id         String   @id @default(uuid())
   name       String
   email      String   @unique
   address    String?
   created_at DateTime @default(now())
   updated_at DateTime @default(now())
-  orders     orders[]
+  orders     Order[]
 }
 
-model products {
+model Product {
   id          String   @id @default(uuid())
   name        String
   description String?
@@ -31,7 +31,7 @@ model products {
   updated_at  DateTime @default(now())
 }
 
-model orders {
+model Order {
   id               String   @id @default(uuid())
   user_id          String
   products         String[]
@@ -39,5 +39,5 @@ model orders {
   total            Float
   delivery_address String
   created_at       DateTime @default(now())
-  user             users    @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  user             User    @relation(fields: [user_id], references: [id], onDelete: Cascade)
 }
